@@ -1,0 +1,136 @@
+.toggle {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--foreground);
+  appearance: none;
+  cursor: pointer;
+  overflow: hidden;
+  isolation: isolate;
+  line-height: 0;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    border-color 240ms ease,
+    color 240ms ease;
+}
+
+.toggle:hover {
+  border-color: var(--foreground);
+}
+
+.toggle:focus-visible {
+  outline: 2px solid var(--foreground);
+  outline-offset: 2px;
+}
+
+.toggle::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  top: 77%;
+  right: 16%;
+  left: 20%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--foreground) 42%, transparent) 24%,
+    color-mix(in srgb, var(--foreground) 42%, transparent) 76%,
+    transparent
+  );
+  pointer-events: none;
+}
+
+.placeholder::after {
+  content: none;
+}
+
+.icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  display: block;
+  width: 1.2rem;
+  height: 1.2rem;
+  transform: translate(-50%, -50%);
+  animation-duration: 520ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-fill-mode: both;
+}
+
+.sunExit {
+  animation-name: sunArc;
+}
+
+.moonExit {
+  animation-name: moonArc;
+}
+
+.sunEnter {
+  animation-name: sunArc;
+  animation-direction: reverse;
+  animation-delay: 140ms;
+}
+
+.moonEnter {
+  animation-name: moonArc;
+  animation-direction: reverse;
+  animation-delay: 140ms;
+}
+
+@keyframes sunArc {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+  }
+
+  55% {
+    opacity: 0.9;
+    transform: translate(calc(-50% + 0.55rem), calc(-50% - 0.45rem))
+      rotate(35deg) scale(0.9);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + 0.9rem), calc(-50% + 0.95rem))
+      rotate(90deg) scale(0.25);
+  }
+}
+
+@keyframes moonArc {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+  }
+
+  55% {
+    opacity: 0.9;
+    transform: translate(calc(-50% - 0.55rem), calc(-50% - 0.45rem))
+      rotate(-35deg) scale(0.9);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% - 0.9rem), calc(-50% + 0.95rem))
+      rotate(-90deg) scale(0.25);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icon {
+    animation-delay: 0ms;
+    animation-duration: 0.01ms;
+  }
+
+  .toggle {
+    transition-duration: 0.01ms;
+  }
+}

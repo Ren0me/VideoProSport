@@ -1,0 +1,19 @@
+{
+  "Metadata": {
+    "title": "Video Pro Sport",
+    "description": "Sports video platform"
+  },
+  "ThemeToggle": {
+    "label": "Toggle theme",
+    "light": "Light theme",
+    "dark": "Dark theme"
+  },
+  "LocaleSwitcher": {
+    "label": "Switch language",
+    "ru": "RU",
+    "en": "EN"
+  },
+  "SpecularButton": {
+    "label": "Make an order"
+  }
+}
