@@ -1,0 +1,393 @@
+'use client';
+
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type KeyboardEvent,
+} from 'react';
+import { gsap } from 'gsap';
+
+import './services-gallery.css';
+import type {
+  ServiceGalleryItem,
+  ServiceMedia,
+} from '../lib/use-get-services-gallery';
+import { FALLBACK_SERVICE_ICON, SERVICE_ICONS } from './service-icons';
+
+export interface AccordionGalleryServicesProps {
+  items: ServiceGalleryItem[];
+  defaultIndex?: number;
+  accentColor?: string;
+  overlayColor?: string;
+  textColor?: string;
+  height?: number;
+  gap?: number;
+  radius?: number;
+  expandRatio?: number;
+  orientation?: 'horizontal' | 'vertical';
+  duration?: number;
+  ease?: string;
+  parallax?: number;
+  tilt?: number;
+  stagger?: number;
+  trigger?: 'hover' | 'click';
+  showLabels?: boolean;
+  grayscale?: boolean;
+  className?: string;
+}
+
+type ServiceMediaViewProps = {
+  media: ServiceMedia;
+  active: boolean;
+  reducedMotion: boolean;
+};
+
+const ServiceMediaView = ({
+  media,
+  active,
+  reducedMotion,
+}: ServiceMediaViewProps) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (active && !reducedMotion) {
+      void video.play().catch(() => {});
+    } else {
+      video.pause();
+    }
+  }, [active, reducedMotion, media.src, media.type]);
+
+  if (media.type === 'video') {
+    return (
+      <video
+        ref={videoRef}
+        src={media.src}
+        poster={media.poster}
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        disablePictureInPicture
+        tabIndex={-1}
+      />
+    );
+  }
+
+  // Media may come from an external admin/CDN URL, so next/image is not applicable here.
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img src={media.src} alt="" draggable={false} />;
+};
+
+const AccordionGalleryServices = ({
+  items,
+  defaultIndex = 2,
+  accentColor = '#ffffff',
+  overlayColor = '#060010',
+  textColor = '#ffffff',
+  height = 460,
+  gap = 10,
+  radius = 16,
+  expandRatio = 0.52,
+  orientation = 'horizontal',
+  duration = 0.6,
+  ease = 'power3.out',
+  parallax = 0.5,
+  tilt = 8,
+  stagger = 0.06,
+  trigger = 'hover',
+  showLabels = true,
+  grayscale = true,
+  className = '',
+}: AccordionGalleryServicesProps) => {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const panelRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const mediaRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const barRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const textRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const tlRef = useRef<gsap.core.Timeline | null>(null);
+  const firstRunRef = useRef(true);
+  const mediaSizeRef = useRef(320);
+  const vertical = orientation === 'vertical';
+  const count = items.length;
+  const [active, setActive] = useState(() =>
+    Math.min(Math.max(defaultIndex, 0), Math.max(count - 1, 0))
+  );
+  const activeIndex = Math.min(active, Math.max(count - 1, 0));
+  const [containerSize, setContainerSize] = useState(0);
+  const [prefersReduced, setPrefersReduced] = useState(false);
+
+  useEffect(() => {
+    const query = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const update = () => setPrefersReduced(query.matches);
+
+    update();
+    query.addEventListener('change', update);
+    return () => query.removeEventListener('change', update);
+  }, []);
+
+  const applyLayout = useCallback(
+    (animate: boolean) => {
+      const panels = panelRefs.current;
+      if (!panels.length) return;
+
+      const r = Math.min(Math.max(expandRatio, 0.2), 0.9);
+      const grow = count > 1 ? (r * (count - 1)) / (1 - r) : 1;
+      const mediaSize = mediaSizeRef.current;
+
+      tlRef.current?.kill();
+      const dur = animate && !prefersReduced ? duration : 0;
+      const tl = gsap.timeline();
+
+      panels.forEach((panel, i) => {
+        if (!panel) return;
+
+        const isActive = i === activeIndex;
+        const media = mediaRefs.current[i];
+        const bar = barRefs.current[i];
+        const text = textRefs.current[i];
+
+        const rot = isActive ? 0 : i < activeIndex ? tilt : -tilt;
+        const rotProp = vertical ? { rotateX: -rot } : { rotateY: rot };
+
+        tl.to(
+          panel,
+          {
+            flexGrow: isActive ? grow : 1,
+            '--ag-dim': isActive ? 0 : 0.35,
+            ...rotProp,
+            duration: dur,
+            ease,
+          },
+          0
+        );
+
+        if (media) {
+          const drift = Math.max(-1.5, Math.min(1.5, activeIndex - i));
+          const shift = drift * parallax * mediaSize * 0.06;
+          const gray = grayscale ? (isActive ? 0 : 1) : 0;
+
+          tl.to(
+            media,
+            {
+              xPercent: -50,
+              yPercent: -50,
+              x: vertical ? 0 : isActive ? 0 : shift,
+              y: vertical ? (isActive ? 0 : shift) : 0,
+              '--ag-gray': gray,
+              duration: dur,
+              ease,
+            },
+            0
+          );
+        }
+
+        if (showLabels && bar && text) {
+          if (isActive) {
+            tl.to(
+              [bar, text],
+              {
+                opacity: 1,
+                duration: dur,
+                ease,
+                stagger: prefersReduced ? 0 : stagger,
+              },
+              0
+            );
+          } else {
+            tl.to(
+              bar,
+              {
+                opacity: 0,
+                duration: dur * 0.4,
+                ease,
+              },
+              0
+            );
+
+            tl.to(
+              text,
+              {
+                opacity: 1,
+                duration: dur,
+                ease,
+              },
+              0
+            );
+          }
+        }
+      });
+
+      tlRef.current = tl;
+    },
+    [
+      activeIndex,
+      count,
+      expandRatio,
+      duration,
+      ease,
+      vertical,
+      tilt,
+      parallax,
+      grayscale,
+      showLabels,
+      stagger,
+      prefersReduced,
+    ]
+  );
+
+  useEffect(() => {
+    const el = rootRef.current;
+    if (!el) return;
+
+    const measure = () => {
+      const rect = el.getBoundingClientRect();
+      const total = vertical ? rect.height : rect.width;
+      const usable = Math.max(total - gap * (count - 1), 120);
+      const size = Math.round(
+        Math.max(140, usable * Math.min(Math.max(expandRatio, 0.2), 0.9) * 1.22)
+      );
+
+      mediaSizeRef.current = size;
+      el.style.setProperty('--ag-media-size', `${size}px`);
+      setContainerSize(size);
+    };
+
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+
+    return () => observer.disconnect();
+  }, [count, expandRatio, gap, vertical]);
+
+  useEffect(() => {
+    if (!containerSize) return;
+
+    applyLayout(!firstRunRef.current);
+    firstRunRef.current = false;
+  }, [applyLayout, containerSize, gap]);
+
+  useEffect(
+    () => () => {
+      tlRef.current?.kill();
+    },
+    []
+  );
+
+  const handleEnter = (i: number) => {
+    if (trigger === 'hover') setActive(i);
+  };
+
+  const handleClick = (i: number) => {
+    setActive(i);
+  };
+
+  const handleKeyDown = (i: number, e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      setActive((i + 1) % count);
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      setActive((i - 1 + count) % count);
+    }
+  };
+
+  const rootStyle = {
+    '--ag-accent': accentColor,
+    '--ag-overlay': overlayColor,
+    '--ag-text': textColor,
+    '--ag-gap': `${gap}px`,
+    '--ag-radius': `${radius}px`,
+    height: vertical ? `${Math.round(height * 1.6)}px` : `${height}px`,
+  } as CSSProperties;
+
+  return (
+    <div
+      ref={rootRef}
+      className={`accordion-gallery${vertical ? ' accordion-gallery--vertical' : ''}${className ? ` ${className}` : ''}`}
+      style={rootStyle}
+      role="list"
+      aria-label="Галерея услуг"
+    >
+      {items.map(({ media, text, label, icon }, i) => {
+        const isActive = i === activeIndex;
+        const Icon = SERVICE_ICONS[icon] ?? FALLBACK_SERVICE_ICON;
+
+        return (
+          <div
+            key={`${label}-${i}`}
+            ref={(el) => {
+              panelRefs.current[i] = el;
+            }}
+            className={`ag-panel${isActive ? ' ag-panel--active' : ''}`}
+            style={{ borderRadius: `${radius}px` }}
+            onClick={() => handleClick(i)}
+            onMouseEnter={() => handleEnter(i)}
+            onFocus={() => setActive(i)}
+            onKeyDown={(e) => handleKeyDown(i, e)}
+            role="listitem"
+            tabIndex={0}
+            aria-current={isActive ? 'true' : undefined}
+            aria-label={`${label}. ${text}`}
+          >
+            <span className="ag-panel__frame">
+              <span
+                className="ag-panel__media"
+                ref={(el) => {
+                  mediaRefs.current[i] = el;
+                }}
+                aria-hidden="true"
+              >
+                <ServiceMediaView
+                  media={media}
+                  active={isActive}
+                  reducedMotion={prefersReduced}
+                />
+              </span>
+              <span className="ag-panel__overlay" aria-hidden="true" />
+            </span>
+
+            <span className="ag-panel__icon" aria-hidden="true">
+              <Icon size={20} strokeWidth={1.7} />
+            </span>
+
+            {showLabels && (
+              <>
+                <span className="ag-panel__label" aria-hidden="true">
+                  <span
+                    className="ag-panel__bar"
+                    ref={(el) => {
+                      barRefs.current[i] = el;
+                    }}
+                  />
+                  <span
+                    className="ag-panel__text"
+                    ref={(el) => {
+                      textRefs.current[i] = el;
+                    }}
+                  >
+                    {label}
+                  </span>
+                </span>
+
+                <span
+                  className="ag-panel__subtext-container"
+                  aria-hidden="true"
+                >
+                  <span className="ag-panel__subtext">{text}</span>
+                </span>
+              </>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+export default AccordionGalleryServices;

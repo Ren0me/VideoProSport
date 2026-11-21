@@ -1,0 +1,323 @@
+.section {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  background-color: var(--page-background);
+  background-image: var(--page-background-image);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+.content {
+  width: min(100%, 78rem);
+  margin-inline: auto;
+  padding: clamp(3rem, 8vh, 6rem) clamp(1.25rem, 4vw, 4rem);
+}
+
+.panel {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: "info badge";
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  padding: clamp(1.75rem, 4vw, 3.5rem);
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: clamp(1.5rem, 3vw, 2.5rem);
+  background:
+    radial-gradient(
+      120% 140% at 92% 8%,
+      rgba(240, 127, 58, 0.34) 0%,
+      rgba(240, 127, 58, 0) 52%
+    ),
+    radial-gradient(
+      90% 120% at 8% 100%,
+      rgba(120, 92, 255, 0.18) 0%,
+      rgba(120, 92, 255, 0) 55%
+    ),
+    linear-gradient(135deg, #2c2836 0%, #1b1922 58%, #16141c 100%);
+  color: #f4f4f5;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.09),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 28px 60px -32px rgba(0, 0, 0, 0.85),
+    0 10px 24px -14px rgba(0, 0, 0, 0.6);
+}
+
+.panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.045) 0 1px,
+    transparent 1px 16px
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.6) 0%,
+    rgba(0, 0, 0, 0.15) 42%,
+    transparent 68%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.6) 0%,
+    rgba(0, 0, 0, 0.15) 42%,
+    transparent 68%
+  );
+  pointer-events: none;
+}
+
+.sweep {
+  position: absolute;
+  top: -60%;
+  left: -30%;
+  z-index: 0;
+  width: 24%;
+  height: 220%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.11) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  opacity: 0;
+  transform: translateX(-40%) rotate(18deg);
+  animation: sale-sweep 9s ease-in-out 2s infinite;
+  pointer-events: none;
+}
+
+.info {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  grid-area: info;
+  gap: clamp(0.9rem, 2vh, 1.35rem);
+  min-width: 0;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
+  color: rgba(244, 244, 245, 0.78);
+}
+
+.dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  flex: none;
+  border-radius: 50%;
+  background: #ff9d59;
+  animation: sale-pulse 2.4s ease-out infinite;
+}
+
+.title {
+  max-width: 24ch;
+  margin: 0;
+  font-size: clamp(1.9rem, 3.2vw + 0.6rem, 3.25rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.text {
+  max-width: 54ch;
+  font-size: clamp(0.95rem, 0.35vw + 0.85rem, 1.08rem);
+  line-height: 1.55;
+  color: rgba(244, 244, 245, 0.72);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.9rem 1.25rem;
+  margin-top: 0.35rem;
+}
+
+.note {
+  max-width: 22ch;
+  padding-left: 0.9rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.16);
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: rgba(244, 244, 245, 0.5);
+}
+
+.badge {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  grid-area: badge;
+  gap: 0.15rem;
+  width: clamp(9.5rem, 16vw, 13.5rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 32% 24%,
+    #ffd6a8 0%,
+    #ffb87a 28%,
+    #f07f3a 72%,
+    #d9681f 100%
+  );
+  color: #26232e;
+  transform: rotate(-7deg);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -10px 24px rgba(150, 60, 0, 0.25),
+    0 24px 40px -22px rgba(240, 127, 58, 0.75);
+  animation: sale-badge-float 7s ease-in-out infinite alternate;
+}
+
+.ring {
+  position: absolute;
+  inset: -0.7rem;
+  border: 1px dashed rgba(255, 184, 122, 0.45);
+  border-radius: 50%;
+  animation: sale-spin 26s linear infinite;
+  pointer-events: none;
+}
+
+.badgeValue {
+  font-family: var(--font-heading);
+  font-size: clamp(1.9rem, 3.2vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+
+.badgeLabel {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+@keyframes sale-sweep {
+  0%,
+  55% {
+    opacity: 0;
+    transform: translateX(-40%) rotate(18deg);
+  }
+
+  62% {
+    opacity: 1;
+  }
+
+  92% {
+    opacity: 1;
+    transform: translateX(460%) rotate(18deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(460%) rotate(18deg);
+  }
+}
+
+@keyframes sale-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 157, 89, 0.45);
+  }
+
+  70% {
+    box-shadow: 0 0 0 0.55rem rgba(255, 157, 89, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 157, 89, 0);
+  }
+}
+
+@keyframes sale-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes sale-badge-float {
+  from {
+    transform: rotate(-7deg) translateY(0);
+  }
+
+  to {
+    transform: rotate(-7deg) translateY(-8px);
+  }
+}
+
+@media (max-width: 860px) {
+  .panel {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "badge"
+      "info";
+    justify-items: start;
+    gap: clamp(1.25rem, 4vw, 2rem);
+  }
+
+  .badge {
+    justify-self: center;
+    width: clamp(7.5rem, 24vw, 9.5rem);
+  }
+}
+
+@media (max-width: 640px) {
+  .panel {
+    padding: 1.35rem;
+    border-radius: 1.25rem;
+  }
+
+  .title {
+    font-size: clamp(1.7rem, 7vw, 2.3rem);
+  }
+
+  .actions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .note {
+    max-width: 100%;
+  }
+
+  .badge {
+    width: 7rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sweep {
+    animation: none;
+    opacity: 0;
+  }
+
+  .dot {
+    animation: none;
+  }
+
+  .badge {
+    animation: none;
+  }
+
+  .ring {
+    animation: none;
+  }
+}

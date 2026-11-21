@@ -1,0 +1,119 @@
+.root {
+  position: relative;
+  display: inline-flex;
+}
+
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  height: 2.25rem;
+  padding: 0 0.5rem;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition:
+    background-color 180ms ease,
+    opacity 180ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.trigger:hover {
+  background: color-mix(in srgb, var(--foreground) 8%, transparent);
+}
+
+.trigger:focus-visible {
+  outline: 2px solid var(--foreground);
+  outline-offset: 2px;
+}
+
+.trigger:disabled {
+  cursor: progress;
+  opacity: 0.55;
+}
+
+.chevron {
+  width: 0.9rem;
+  height: 0.9rem;
+  transition: transform 180ms ease;
+}
+
+.trigger[aria-expanded="true"] .chevron {
+  transform: rotate(180deg);
+}
+
+.dropdown {
+  --locale-dropdown-bg: #000000;
+  --locale-dropdown-fg: #ffffff;
+  --locale-dropdown-selected-bg: #ffffff;
+  --locale-dropdown-selected-fg: #000000;
+
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  z-index: 20;
+  min-width: 5rem;
+  padding: 0.25rem;
+  border-radius: 0.75rem;
+  background: var(--locale-dropdown-bg);
+  color: var(--locale-dropdown-fg);
+  box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.55);
+}
+
+:global([data-theme="dark"]) .dropdown {
+  --locale-dropdown-bg: #ffffff;
+  --locale-dropdown-fg: #000000;
+  --locale-dropdown-selected-bg: #000000;
+  --locale-dropdown-selected-fg: #ffffff;
+
+  box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.35);
+}
+
+.list {
+  display: grid;
+  gap: 0.125rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.45rem 0.75rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
+}
+
+.option:hover {
+  background: color-mix(in srgb, var(--locale-dropdown-fg) 12%, transparent);
+}
+
+.option[aria-selected="true"] {
+  background: var(--locale-dropdown-selected-bg);
+  color: var(--locale-dropdown-selected-fg);
+}
+
+.option:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: -2px;
+}

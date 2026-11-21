@@ -1,0 +1,258 @@
+:root {
+  color-scheme: light;
+  --background: #ffffff;
+  --foreground: #171717;
+  --header-height: 7rem;
+
+  --page-background: #f4f0ea;
+  --page-background-image:
+    radial-gradient(
+      110% 90% at 10% 0%,
+      rgba(255, 255, 255, 0.96) 0%,
+      rgba(255, 255, 255, 0) 58%
+    ),
+    radial-gradient(
+      85% 75% at 92% 6%,
+      rgba(255, 176, 128, 0.5) 0%,
+      rgba(255, 176, 128, 0) 62%
+    ),
+    radial-gradient(
+      75% 85% at 78% 96%,
+      rgba(126, 163, 255, 0.42) 0%,
+      rgba(126, 163, 255, 0) 64%
+    ),
+    radial-gradient(
+      70% 70% at 22% 82%,
+      rgba(255, 214, 140, 0.45) 0%,
+      rgba(255, 214, 140, 0) 68%
+    ),
+    linear-gradient(135deg, #f8f4ef 0%, #ebe8f4 100%);
+
+  --font-heading: var(--font-montserrat);
+
+  --h1-size: clamp(2.2rem, 3.5vw, 3rem);
+  --h1-weight: 600;
+  --h1-line-height: 0.98;
+  --h1-letter-spacing: -0.035em;
+
+  --h2-size: clamp(1.75rem, 3vw, 2.5rem);
+  --h2-weight: 600;
+  --h2-line-height: 1.15;
+  --h2-letter-spacing: -0.02em;
+
+  --h3-size: clamp(1rem, 1.5vw, 1.2rem);
+  --h3-weight: 400;
+  --h3-line-height: 1.3;
+  --h3-letter-spacing: 0;
+
+  --h4-size: 1.25rem;
+  --h4-weight: 600;
+  --h4-line-height: 1.3;
+  --h4-letter-spacing: -0.01em;
+
+  --h5-size: 1.125rem;
+  --h5-weight: 600;
+  --h5-line-height: 1.35;
+  --h5-letter-spacing: -0.005em;
+
+  --h6-size: 1rem;
+  --h6-weight: 600;
+  --h6-line-height: 1.4;
+  --h6-letter-spacing: 0;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --background: #0a0a0a;
+  --foreground: #ededed;
+
+  --page-background: #08080b;
+  --page-background-image:
+    radial-gradient(
+      100% 90% at 8% 0%,
+      rgba(79, 96, 140, 0.42) 0%,
+      rgba(79, 96, 140, 0) 58%
+    ),
+    radial-gradient(
+      80% 72% at 92% 8%,
+      rgba(126, 68, 45, 0.35) 0%,
+      rgba(126, 68, 45, 0) 60%
+    ),
+    radial-gradient(
+      85% 90% at 75% 100%,
+      rgba(43, 72, 135, 0.35) 0%,
+      rgba(43, 72, 135, 0) 65%
+    ),
+    linear-gradient(140deg, #0b0b10 0%, #14121a 55%, #09090c 100%);
+}
+
+@media (max-width: 1120px) {
+  :root {
+    --header-height: 9rem;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --header-height: 8.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --header-height: 7.75rem;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  scroll-padding-top: var(--header-height);
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-x: clip;
+  background-color: var(--page-background);
+  background-image: var(--page-background-image);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  color: var(--foreground);
+  font-family: var(--font-montserrat);
+}
+
+main {
+  padding-top: var(--header-height);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  font-style: normal;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: var(--h1-size);
+  font-weight: var(--h1-weight);
+  line-height: var(--h1-line-height);
+  letter-spacing: var(--h1-letter-spacing);
+  align-self: flex-start;
+  max-width: 100%;
+  font-size: var(--h1-size);
+  font-weight: var(--h1-weight);
+  line-height: var(--h1-line-height);
+  letter-spacing: var(--h1-letter-spacing);
+  text-wrap: balance;
+  background-image:
+    radial-gradient(
+      110% 90% at 10% 0%,
+      rgba(255, 255, 255, 0.45) 0%,
+      rgba(255, 255, 255, 0) 55%
+    ),
+    radial-gradient(
+      85% 75% at 92% 6%,
+      rgba(255, 214, 140, 0.75) 0%,
+      rgba(255, 214, 140, 0) 60%
+    ),
+    radial-gradient(
+      75% 85% at 78% 96%,
+      rgba(255, 120, 40, 0.55) 0%,
+      rgba(255, 120, 40, 0) 65%
+    ),
+    linear-gradient(135deg, #ffb87a 0%, #ff9d59 45%, #f07f3a 100%);
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+
+  filter: drop-shadow(0 2px 3px rgba(128, 128, 128, 0.35));
+}
+
+h2 {
+  font-size: var(--h2-size);
+  font-weight: var(--h2-weight);
+  line-height: var(--h2-line-height);
+  letter-spacing: var(--h2-letter-spacing);
+  align-self: flex-start;
+  max-width: 100%;
+  letter-spacing: var(--h1-letter-spacing);
+  text-wrap: balance;
+  background-image:
+    radial-gradient(
+      110% 90% at 10% 0%,
+      rgba(255, 255, 255, 0.45) 0%,
+      rgba(255, 255, 255, 0) 55%
+    ),
+    radial-gradient(
+      85% 75% at 92% 6%,
+      rgba(255, 214, 140, 0.75) 0%,
+      rgba(255, 214, 140, 0) 60%
+    ),
+    radial-gradient(
+      75% 85% at 78% 96%,
+      rgba(255, 120, 40, 0.55) 0%,
+      rgba(255, 120, 40, 0) 65%
+    ),
+    linear-gradient(135deg, #ffb87a 0%, #ff9d59 45%, #f07f3a 100%);
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+
+  filter: drop-shadow(0 2px 3px rgba(128, 128, 128, 0.35));
+}
+
+h3 {
+  font-size: var(--h3-size);
+  font-weight: var(--h3-weight);
+  line-height: var(--h3-line-height);
+  letter-spacing: var(--h3-letter-spacing);
+}
+
+h4 {
+  font-size: var(--h4-size);
+  font-weight: var(--h4-weight);
+  line-height: var(--h4-line-height);
+  letter-spacing: var(--h4-letter-spacing);
+}
+
+h5 {
+  font-size: var(--h5-size);
+  font-weight: var(--h5-weight);
+  line-height: var(--h5-line-height);
+  letter-spacing: var(--h5-letter-spacing);
+}
+
+h6 {
+  font-size: var(--h6-size);
+  font-weight: var(--h6-weight);
+  line-height: var(--h6-line-height);
+  letter-spacing: var(--h6-letter-spacing);
+}
+
+a {
+  text-decoration: none;
+  color: var(--foreground);
+}

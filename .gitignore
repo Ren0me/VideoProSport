@@ -20,6 +20,9 @@
 # production
 /build
 
+# large source video (not used by the app; keep locally only)
+hero_video.mp4
+
 # misc
 .DS_Store
 *.pem

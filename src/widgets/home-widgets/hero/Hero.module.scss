@@ -1,0 +1,121 @@
+.hero {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100svh;
+  margin-top: calc(var(--header-height, 7rem) * -1);
+  padding: clamp(1.25rem, 4vw, 4rem);
+  padding-bottom: clamp(2rem, 8vh, 5.5rem);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.video {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(
+      to top,
+      rgba(8, 8, 12, 0.92) 0%,
+      rgba(8, 8, 12, 0.62) 20%,
+      rgba(8, 8, 12, 0.28) 45%,
+      rgba(8, 8, 12, 0.08) 65%,
+      transparent 82%
+    ),
+    linear-gradient(
+      to right,
+      rgba(8, 8, 12, 0.42) 0%,
+      rgb(8 8 12 / 0%) 55%
+    );
+  pointer-events: none;
+}
+
+.heroText {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.75rem, 1.8vw, 1.25rem);
+  width: min(52rem, 100%);
+}
+
+.hero[data-has-video] .heroText {
+  color: #ffffff;
+}
+
+.heroTitle {
+  margin: 0;
+  font-size: var(--h1-size);
+  font-weight: var(--h1-weight);
+  line-height: var(--h1-line-height);
+  letter-spacing: var(--h1-letter-spacing);
+  text-wrap: balance;
+
+  background-image:
+    radial-gradient(
+      110% 90% at 10% 0%,
+      rgba(255, 255, 255, 0.45) 0%,
+      rgba(255, 255, 255, 0) 55%
+    ),
+    radial-gradient(
+      85% 75% at 92% 6%,
+      rgba(255, 214, 140, 0.75) 0%,
+      rgba(255, 214, 140, 0) 60%
+    ),
+    radial-gradient(
+      75% 85% at 78% 96%,
+      rgba(255, 120, 40, 0.55) 0%,
+      rgba(255, 120, 40, 0) 65%
+    ),
+    linear-gradient(135deg, #ffb87a 0%, #ff9d59 45%, #f07f3a 100%);
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+
+  filter: drop-shadow(0 2px 3px rgba(128, 128, 128, 0.35));
+}
+
+.heroSubtitle {
+  max-width: 36rem;
+  margin: 0;
+  font-size: var(--h3-size);
+  font-weight: var(--h3-weight);
+  line-height: var(--h3-line-height);
+  letter-spacing: var(--h3-letter-spacing);
+  opacity: 0.75;
+  text-wrap: pretty;
+}
+
+.hero[data-has-video] .heroSubtitle {
+  opacity: 0.82;
+}
+
+.scrollIcon{
+  position: absolute;
+  z-index: 1000;
+  bottom: 25px;
+  right: 50%;
+  color: #ffffff;
+  opacity: 0.65;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .video {
+    display: none;
+  }
+}
