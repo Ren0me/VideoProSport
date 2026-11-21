@@ -1,0 +1,8 @@
+# Large local source videos (not used by the app)
+public/videos/hero_video.mp4
+src/shared/assets/hero_video.mp4
+
+# Local-only artifacts
+node_modules
+.next
+.git
