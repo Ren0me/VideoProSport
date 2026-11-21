@@ -22,6 +22,7 @@ export interface SpecularButtonProps extends Omit<ButtonHTMLAttributes<HTMLButto
   tint?: string;
   tintOpacity?: number;
   blur?: number;
+  saturate?: number;
   textColor?: string;
   lineColor?: string;
   baseColor?: string;
@@ -225,6 +226,7 @@ const SpecularButton = ({
   tint = '#ffffff',
   tintOpacity = 0.04,
   blur = 0,
+  saturate = 1,
   textColor = '#f5f5f5',
   lineColor = '#ffffff',
   baseColor = '#525252',
@@ -273,7 +275,9 @@ const SpecularButton = ({
     disabled
   };
   const settingsRef = useRef(settings);
-  settingsRef.current = settings;
+  useEffect(() => {
+    settingsRef.current = settings;
+  });
 
   useEffect(() => {
     const button = buttonRef.current;
@@ -526,6 +530,7 @@ const SpecularButton = ({
           '--sb-tint': tint,
           '--sb-tint-opacity': tintOpacity,
           '--sb-blur': `${blur}px`,
+          '--sb-saturate': Math.max(0, saturate),
           '--sb-text-color': textColor,
           '--sb-fill-color': isDark ? fillColor : '#ffb783',
           '--sb-fill-opacity': clamp(fillOpacity, 0, 1),

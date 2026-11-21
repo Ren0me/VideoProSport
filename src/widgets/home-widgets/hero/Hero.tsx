@@ -2,7 +2,8 @@ import { SpecularButton } from "@shared/ui/molecules";
 import styles from "./Hero.module.scss";
 import { ArrowRight } from "lucide-react";
 import { useTheme } from "next-themes";
-
+import UseAnimations from 'react-useanimations';
+import scrollDown from 'react-useanimations/lib/scrollDown';
 
 export type HeroProps = {
   videoSrc?: string;
@@ -14,7 +15,7 @@ export const Hero = ({ videoSrc, poster }: HeroProps) => {
 
   return (
     <section
-      id="Hero"
+      id="main"
       className={styles.hero}
       data-has-video={hasVideo ? "" : undefined}
     >
@@ -37,7 +38,11 @@ export const Hero = ({ videoSrc, poster }: HeroProps) => {
       {hasVideo && <div className={styles.scrim} aria-hidden="true" />}
 
       <div className={styles.heroText}>
-        <h1 className={styles.heroTitle}>Видео Про Спорт</h1>
+        <h1
+          className={styles.heroTitle}
+        >
+          ВидеоПроСпорт
+        </h1>
         <h3 className={styles.heroSubtitle}
             style={{
                 textTransform: 'uppercase',
@@ -49,8 +54,10 @@ export const Hero = ({ videoSrc, poster }: HeroProps) => {
         <SpecularButton
             size="lg"
             radius={18}
-            tint="#ff9d59"
-            tintOpacity={0.03}
+            tint="#26232e"
+            tintOpacity={0.4}
+            blur={20}
+            saturate={1.6}
             textColor="#f5f5f5"
             lineColor="#ffc9a3"
             fillColor="#ffceab"
@@ -66,6 +73,7 @@ export const Hero = ({ videoSrc, poster }: HeroProps) => {
             proximity={250}
         />
       </div>
+      <UseAnimations className={styles.scrollIcon} animation={scrollDown} size={32} />
     </section>
   );
 };

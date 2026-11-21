@@ -18,12 +18,12 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: color-mix(in srgb, var(--background) 74%, transparent);
+  background: color-mix(in srgb, var(--background) 48%, transparent);
   box-shadow:
     inset 0 -1px 0 color-mix(in srgb, var(--foreground) 10%, transparent),
     0 18px 40px -26px rgba(0, 0, 0, 0.55);
-  -webkit-backdrop-filter: blur(20px) saturate(1.6);
-  backdrop-filter: blur(20px) saturate(1.6);
+  -webkit-backdrop-filter: blur(24px) saturate(1.7);
+  backdrop-filter: blur(24px) saturate(1.7);
   opacity: 0;
   pointer-events: none;
   transition: opacity 240ms ease;
@@ -54,10 +54,6 @@
   width: auto;
   height: clamp(2.5rem, 3.4vw + 1.4rem, 5rem);
   max-width: 100%;
-}
-
-:global(:root[data-theme="light"]) .logo {
-  filter: brightness(0.28);
 }
 
 .nav {
@@ -143,10 +139,6 @@
       inset 0 0 0 1px rgba(255, 255, 255, 0.08),
       inset 0 1px 0 rgba(255, 255, 255, 0.06),
       0 10px 24px -18px rgba(0, 0, 0, 0.55);
-  }
-
-  .panelProfile > a:hover {
-    background: rgba(52, 48, 62, 0.28);
   }
 }
 

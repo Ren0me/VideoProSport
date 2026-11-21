@@ -15,5 +15,28 @@
   },
   "SpecularButton": {
     "label": "Make an order"
+  },
+  "ScrollUpButton": {
+    "label": "Back to top"
+  },
+  "Footer": {
+    "sections": "Sections",
+    "contacts": "Contacts",
+    "documents": "Documents",
+    "about": "About",
+    "services": "Services",
+    "portfolio": "Portfolio",
+    "faq": "FAQ",
+    "oferta": "Public offer",
+    "personal_data": "Personal Data Processing Policy",
+    "user_agreement": "User agreement"
+  },
+  "SaleBanner": {
+    "eyebrow": "Early booking",
+    "title": "−10% of the order value",
+    "text": "Place your order in advance — we’ll secure a personal discount for the day of the competition.",
+    "note": "Offer valid until the competition starts",
+    "badgeValue": "−10%",
+    "badgeLabel": "in the photo and video"
   }
 }

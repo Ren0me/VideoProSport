@@ -1,4 +1,5 @@
 import { ModalProvider, ThemeProvider } from "@app/providers";
+import "@app/styles/tailwind.css";
 import "@app/styles/globals.scss";
 import { montserrat } from "@shared/config/fonts";
 import { routing } from "@shared/i18n";

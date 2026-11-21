@@ -1,0 +1,16 @@
+.partners {
+  width: 100%;
+  overflow-x: clip;
+}
+
+.content {
+  width: min(100%, 78rem);
+  margin-inline: auto;
+  padding: clamp(3rem, 8vh, 6rem) clamp(1.25rem, 4vw, 4rem);
+  padding-bottom: clamp(1.25rem, 3vh, 2rem);
+}
+
+.partnersTitle {
+  margin: 0;
+  text-align: right;
+}

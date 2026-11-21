@@ -1,12 +1,18 @@
 // Mirrors the dark glass surface of PillNav (surface="glass", theme="dark").
 .profileLink {
+  --profile-pill: linear-gradient(180deg, #ffffff 0%, #ebebf0 100%);
+  --profile-pill-ink: #121016;
+
+  position: relative;
   display: inline-flex;
   flex: none;
   align-items: center;
   justify-content: center;
   height: 2.75rem;
   padding: 0 1rem;
+  overflow: hidden;
   border-radius: 999px;
+  isolation: isolate;
   background: rgba(38, 35, 46, 0.4);
   color: #f4f4f5;
   font-size: 0.875rem;
@@ -21,12 +27,35 @@
     0 6px 16px -8px rgba(0, 0, 0, 0.5);
   -webkit-backdrop-filter: blur(20px) saturate(1.6);
   backdrop-filter: blur(20px) saturate(1.6);
-  transition: background-color 180ms ease;
+  transition: background-color 180ms ease, color 0.2s ease;
   -webkit-tap-highlight-color: transparent;
 }
 
-.profileLink:hover {
-  background: rgba(52, 48, 62, 0.6);
+.profileLink::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--profile-pill);
+  opacity: 0;
+  transition: opacity 0.22s ease;
+  pointer-events: none;
+}
+
+.profileLink:hover::before,
+.profileLink:focus-visible::before {
+  opacity: 1;
+}
+
+.profileLink:hover,
+.profileLink:focus-visible {
+  color: var(--profile-pill-ink);
+}
+
+.innerProfileLink {
+  position: relative;
+  z-index: 1;
 }
 
 .profileLink:focus-visible {
@@ -41,6 +70,9 @@
   }
 }
 
-@media (max-width: 535px) {
-
+@media (prefers-reduced-motion: reduce) {
+  .profileLink,
+  .profileLink::before {
+    transition: none;
+  }
 }

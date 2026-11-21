@@ -1,0 +1,23 @@
+.services {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  background-color: var(--page-background);
+  background-image: var(--page-background-image);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(1.5rem, 3.5vh, 2.75rem);
+  width: min(100%, 78rem);
+  margin-inline: auto;
+  padding: clamp(3rem, 8vh, 6rem) clamp(1.25rem, 4vw, 4rem);
+}
+
+.servicesTitle {
+  align-self: flex-end;
+}

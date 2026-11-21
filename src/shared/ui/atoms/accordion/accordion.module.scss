@@ -1,0 +1,162 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.item {
+  border-bottom: 1px solid var(--accordion-divider, transparent);
+}
+
+.item:last-child {
+  border-bottom: 0;
+}
+
+.header {
+  display: flex;
+  margin: 0;
+}
+
+.trigger {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  padding: 1rem 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: left;
+  cursor: pointer;
+  transition: color 180ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.trigger:hover {
+  color: var(--accordion-accent, #f07f3a);
+}
+
+.trigger:focus-visible {
+  outline: 2px solid var(--accordion-accent, #f07f3a);
+  outline-offset: 3px;
+  border-radius: 0.4rem;
+}
+
+.trigger:disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.indicator {
+  flex: none;
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-top: 0.15rem;
+  color: currentColor;
+  opacity: 0.55;
+  transition:
+    transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 180ms ease;
+}
+
+.aperture {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-top: 0;
+}
+
+.trigger:hover .indicator {
+  opacity: 1;
+}
+
+.trigger[data-state='open'] .indicator {
+  opacity: 1;
+}
+
+.trigger[data-state='open'] .chevron {
+  transform: rotate(180deg);
+}
+
+.apertureRing {
+  stroke: currentColor;
+  stroke-width: 1.4;
+  opacity: 0.9;
+}
+
+.apertureBladeGroup {
+  transform-box: view-box;
+  transform-origin: 24px 24px;
+  transform: rotate(calc(var(--blade-rotation) - 10deg)) scale(0.22);
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.apertureBlade {
+  fill: currentColor;
+  fill-opacity: 0.26;
+  stroke: currentColor;
+  stroke-width: 1;
+  stroke-opacity: 0.8;
+  vector-effect: non-scaling-stroke;
+}
+
+.trigger:not([data-state='open']):hover .apertureBladeGroup {
+  transform: rotate(calc(var(--blade-rotation) - 2deg)) scale(0.36);
+}
+
+.trigger[data-state='open'] .apertureBladeGroup {
+  transform: rotate(calc(var(--blade-rotation) + 50deg)) scale(0.7);
+}
+
+.content {
+  overflow: hidden;
+}
+
+.content[data-state='open'] {
+  animation: accordion-down 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.content[data-state='closed'] {
+  animation: accordion-up 200ms cubic-bezier(0.4, 0, 1, 1);
+}
+
+.contentInner {
+  padding-bottom: 1rem;
+}
+
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+
+  to {
+    height: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trigger,
+  .indicator,
+  .apertureBladeGroup {
+    transition: none;
+  }
+
+  .content[data-state='open'],
+  .content[data-state='closed'] {
+    animation: none;
+  }
+}

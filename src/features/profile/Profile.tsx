@@ -4,7 +4,9 @@ import styles from './Profile.module.scss';
 export const ProfileLink = () => {
     return(
         <Link className={styles.profileLink} href={''}>
-            Личный кабинет
+            <span className={styles.innerProfileLink}>
+                Личный кабинет
+            </span>
         </Link>
     )
 }
