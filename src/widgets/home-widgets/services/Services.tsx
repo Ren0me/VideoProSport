@@ -1,5 +1,5 @@
 import styles from "./Services.module.scss";
-import AccordionGalleryServices from "./ui/services-gallery";
+import { ServicesGallery } from "./ui/services-gallery-view";
 import { useGetServicesGallery } from "./lib/use-get-services-gallery";
 import { CornerLink } from "@/src/shared/ui";
 
@@ -11,7 +11,7 @@ export const Services = () => {
       <div className={styles.content}>
         <h2 className={styles.servicesTitle}>Услуги</h2>
         <div className={styles.servicesGallery}>
-            <AccordionGalleryServices
+            <ServicesGallery
                 items={items}
                 defaultIndex={2}
                 expandRatio={0.52}

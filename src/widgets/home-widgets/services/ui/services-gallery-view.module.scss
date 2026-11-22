@@ -1,0 +1,6 @@
+.placeholder {
+  width: 100%;
+  height: clamp(340px, 108vw, 440px);
+  border-radius: 16px;
+  background: color-mix(in srgb, #0a0713 55%, transparent);
+}

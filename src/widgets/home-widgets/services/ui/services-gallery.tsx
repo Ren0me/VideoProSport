@@ -11,11 +11,10 @@ import {
 import { gsap } from 'gsap';
 
 import './services-gallery.css';
-import type {
-  ServiceGalleryItem,
-  ServiceMedia,
-} from '../lib/use-get-services-gallery';
+import { usePrefersReducedMotion } from '../lib/use-prefers-reduced-motion';
+import type { ServiceGalleryItem } from '../lib/use-get-services-gallery';
 import { FALLBACK_SERVICE_ICON, SERVICE_ICONS } from './service-icons';
+import { ServiceMediaView } from './service-media';
 
 export interface AccordionGalleryServicesProps {
   items: ServiceGalleryItem[];
@@ -38,51 +37,6 @@ export interface AccordionGalleryServicesProps {
   grayscale?: boolean;
   className?: string;
 }
-
-type ServiceMediaViewProps = {
-  media: ServiceMedia;
-  active: boolean;
-  reducedMotion: boolean;
-};
-
-const ServiceMediaView = ({
-  media,
-  active,
-  reducedMotion,
-}: ServiceMediaViewProps) => {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    if (active && !reducedMotion) {
-      void video.play().catch(() => {});
-    } else {
-      video.pause();
-    }
-  }, [active, reducedMotion, media.src, media.type]);
-
-  if (media.type === 'video') {
-    return (
-      <video
-        ref={videoRef}
-        src={media.src}
-        poster={media.poster}
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        disablePictureInPicture
-        tabIndex={-1}
-      />
-    );
-  }
-
-  // Media may come from an external admin/CDN URL, so next/image is not applicable here.
-  // eslint-disable-next-line @next/next/no-img-element
-  return <img src={media.src} alt="" draggable={false} />;
-};
 
 const AccordionGalleryServices = ({
   items,
@@ -120,16 +74,7 @@ const AccordionGalleryServices = ({
   );
   const activeIndex = Math.min(active, Math.max(count - 1, 0));
   const [containerSize, setContainerSize] = useState(0);
-  const [prefersReduced, setPrefersReduced] = useState(false);
-
-  useEffect(() => {
-    const query = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const update = () => setPrefersReduced(query.matches);
-
-    update();
-    query.addEventListener('change', update);
-    return () => query.removeEventListener('change', update);
-  }, []);
+  const prefersReduced = usePrefersReducedMotion();
 
   const applyLayout = useCallback(
     (animate: boolean) => {
