@@ -45,6 +45,12 @@
         visibility 0s;
 }
 
+@media (max-width: 768px) {
+    .scrollUpButton {
+        bottom: calc(5.75rem + env(safe-area-inset-bottom, 0px));
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .scrollUpButton,
     .isVisible {

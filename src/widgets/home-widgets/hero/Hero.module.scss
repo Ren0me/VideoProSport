@@ -119,3 +119,12 @@
     display: none;
   }
 }
+
+@media (max-width: 340px) {
+  .heroTitle{
+    font-size: clamp(2rem, 3.3vw, 2.8rem);
+  }
+  .heroSubtitle{
+    font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+  }
+}

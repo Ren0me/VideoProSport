@@ -1,3 +1,15 @@
 .main {
   flex: 1 0 auto;
 }
+
+.mobileDockSpacer {
+  display: none;
+  flex: none;
+}
+
+@media (max-width: 768px) {
+  .mobileDockSpacer {
+    display: block;
+    height: calc(5rem + env(safe-area-inset-bottom, 0px));
+  }
+}
