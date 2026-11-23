@@ -183,7 +183,7 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.55),
     inset 0 -10px 24px rgba(150, 60, 0, 0.25),
     0 24px 40px -22px rgba(240, 127, 58, 0.75);
-  animation: sale-badge-float 7s ease-in-out infinite alternate;
+  animation: sale-badge-float 1.5s ease-in-out infinite alternate;
 }
 
 .ring {
@@ -225,12 +225,12 @@
 
   92% {
     opacity: 1;
-    transform: translateX(460%) rotate(18deg);
+    transform: translateX(510%) rotate(18deg);
   }
 
   100% {
     opacity: 0;
-    transform: translateX(460%) rotate(18deg);
+    transform: translateX(510%) rotate(18deg);
   }
 }
 
@@ -260,7 +260,7 @@
   }
 
   to {
-    transform: rotate(-7deg) translateY(-8px);
+    transform: rotate(-7deg) translateY(-10px);
   }
 }
 

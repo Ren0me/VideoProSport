@@ -23,7 +23,7 @@ export const About = () => {
 
           <AboutCards />
         </div>
-        <CornerLink label="О компании" route="contacts"/>
+        <CornerLink label="О компании" route="about"/>
       </div>
     </section>
   );

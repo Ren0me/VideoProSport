@@ -9,6 +9,7 @@ import {
   type KeyboardEvent,
 } from 'react';
 import { gsap } from 'gsap';
+import { ArrowRight } from 'lucide-react';
 
 import './services-gallery.css';
 import { usePrefersReducedMotion } from '../lib/use-prefers-reduced-motion';
@@ -317,6 +318,15 @@ const AccordionGalleryServices = ({
                     }}
                   >
                     {label}
+                  </span>
+                  <span className="ag-panel__hint" onClick={() => {}}>
+                    <span className="ag-panel__hint-text">Подробнее</span>
+                    <ArrowRight
+                      className="ag-panel__hint-arrow"
+                      size={14}
+                      strokeWidth={1.8}
+                      aria-hidden="true"
+                    />
                   </span>
                 </span>
 

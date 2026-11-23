@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { Link } from "@shared/i18n";
+import { Link, usePathname } from "@shared/i18n";
 import { PillNav } from "@shared/ui";
 import logo from "@shared/assets/logo.png";
 import { useGetNavList } from "../lib";
@@ -12,11 +12,29 @@ import { ProfileLink } from "@features/profile";
 const SCROLL_THRESHOLD = 24;
 const COMPACT_HEADER_MEDIA = "(max-width: 535px)";
 
+const normalizePath = (pathname: string) =>
+  pathname.replace(/^\/(ru|en)(?=\/|$)/, "") || "/";
+
 export const Header = ({ children }: { children?: ReactNode }) => {
-  const navItems = useGetNavList();
+  const pathname = usePathname();
+  const path = normalizePath(pathname);
+  const isHome = path === "/";
+  const navItems = useGetNavList({ page: isHome ? "home" : "another" });
   const headerRef = useRef<HTMLElement>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isCompactHeader, setIsCompactHeader] = useState(false);
+  const [hash, setHash] = useState("");
+
+  const activeHref = isHome ? hash || "/" : path;
+
+  useEffect(() => {
+    const syncHash = () => setHash(window.location.hash);
+
+    syncHash();
+    window.addEventListener("hashchange", syncHash);
+
+    return () => window.removeEventListener("hashchange", syncHash);
+  }, [pathname]);
 
   useEffect(() => {
     const query = window.matchMedia(COMPACT_HEADER_MEDIA);
@@ -97,7 +115,7 @@ export const Header = ({ children }: { children?: ReactNode }) => {
       <div className={styles.nav}>
         <PillNav
           items={navItems}
-          activeHref="/"
+          activeHref={activeHref}
           itemStyle="plain"
           hoverEffect="glide"
           indicator="pill"

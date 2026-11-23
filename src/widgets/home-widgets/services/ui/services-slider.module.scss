@@ -157,3 +157,25 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
 }
+
+.hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 10px 0 0 13px;
+  padding: 4px 0;
+  color: var(--slider-text);
+  font-size: 0.68rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.85);
+  opacity: 0.75;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.hint:hover {
+  opacity: 1;
+}

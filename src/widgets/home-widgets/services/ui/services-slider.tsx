@@ -4,6 +4,7 @@ import { useCallback, useRef, type CSSProperties } from 'react';
 import { A11y, Autoplay, Keyboard } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import type { Swiper as SwiperClass } from 'swiper';
+import { ArrowRight } from 'lucide-react';
 
 import 'swiper/css';
 import 'swiper/css/a11y';
@@ -146,6 +147,10 @@ export const ServicesSlider = ({
                     <h3 className={styles.title}>{label}</h3>
                   </div>
                   <p className={styles.description}>{text}</p>
+                  <span className={styles.hint} onClick={() => {}}>
+                    <span>Подробнее</span>
+                    <ArrowRight size={14} strokeWidth={1.8} aria-hidden="true" />
+                  </span>
                 </div>
               </>
             )}
