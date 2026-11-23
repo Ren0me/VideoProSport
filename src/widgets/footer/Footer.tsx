@@ -12,6 +12,7 @@ import {
   WhatsAppIcon,
 } from "./social-icons";
 import styles from "./Footer.module.scss";
+import { ArrowUpRight } from "lucide-react";
 
 async function CopyrightYear() {
   "use cache";
@@ -61,6 +62,7 @@ export const Footer = async ({
 
   return (
     <footer
+      id="contacts"
       className={cn(
         styles.footer,
         variant === "merged" && styles.merged,
@@ -139,6 +141,18 @@ export const Footer = async ({
                 </li>
               ))}
             </ul>
+            <Link 
+              className={styles.listLink}
+              href='/contacts'
+              style={{
+                // color: 'rgba(0,0,0,0.5)',
+                fontSize: '14px',
+                display: 'flex',
+              }}
+            >
+                Больше информации
+                <ArrowUpRight aria-hidden="true" size={14}/>
+            </Link>
             <ul className={styles.socials}>
               {socialLinks.map(({ label, href, Icon }) => (
                 <li key={href}>

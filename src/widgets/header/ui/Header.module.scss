@@ -123,7 +123,20 @@
   }
 }
 
-@media (max-width: 535px) {
+@media (max-width: 768px) {
+  .header {
+    row-gap: 0;
+  }
+
+  .nav {
+    min-height: 0;
+  }
+
+  .nav :global(.pill-nav__bar),
+  .nav :global(.pill-nav__toggle) {
+    display: none;
+  }
+
   .profileSlot {
     display: none;
   }

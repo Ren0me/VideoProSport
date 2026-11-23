@@ -13,5 +13,6 @@ export const SiteLayout = ({ children }: { children: React.ReactNode }) => (
     <SiteFooter>
       <Footer />
     </SiteFooter>
+    <div className={styles.mobileDockSpacer} aria-hidden="true" />
   </>
 );

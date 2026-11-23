@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  useCallback,
   useEffect,
   useId,
   useLayoutEffect,
@@ -11,7 +12,8 @@ import {
   type FocusEvent as ReactFocusEvent,
   type MouseEvent as ReactMouseEvent,
   type PointerEvent as ReactPointerEvent,
-  type ReactNode
+  type ReactNode,
+  type RefObject
 } from 'react';
 import './PillNav.css';
 
@@ -20,6 +22,7 @@ export interface PillNavItem {
   href?: string;
   icon?: ReactNode;
   ariaLabel?: string;
+  ariaExpanded?: boolean;
 }
 
 export interface PillNavProps {
@@ -46,6 +49,10 @@ export interface PillNavProps {
   stretch?: number;
   intro?: boolean;
   collapse?: 'auto' | 'always' | 'never';
+  iconOnly?: boolean;
+  menuOpen?: boolean;
+  showToggle?: boolean;
+  menuTriggerRef?: RefObject<HTMLElement | null>;
   onMenuToggle?: (open: boolean) => void;
   panelFooter?: ReactNode;
   ariaLabel?: string;
@@ -57,6 +64,7 @@ interface LinkProps {
   className: string;
   'aria-current'?: 'page';
   'aria-label'?: string;
+  'aria-expanded'?: boolean;
   tabIndex?: number;
   onClick?: (event: ReactMouseEvent<HTMLElement>) => void;
 }
@@ -227,6 +235,10 @@ const PillNav = ({
   stretch = 0.5,
   intro = true,
   collapse = 'auto',
+  iconOnly = false,
+  menuOpen,
+  showToggle = true,
+  menuTriggerRef,
   onMenuToggle,
   panelFooter,
   ariaLabel = 'Main',
@@ -254,15 +266,31 @@ const PillNav = ({
   const pendingRef = useRef<boolean | null>(null);
   const [selected, setSelected] = useState(defaultActiveIndex);
   const [collapsed, setCollapsed] = useState(collapse === 'always');
-  const [open, setOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
   const [panelShown, setPanelShown] = useState(false);
 
+  const open = menuOpen ?? internalOpen;
   const controlled = activeHref !== undefined;
   const activeIndex = controlled ? items.findIndex(item => item.href === activeHref) : selected;
   const joined = layout === 'joined';
   const hasLogo = Boolean(logo);
   const fill = hoverEffect === 'fill';
   const glide = !fill && (hoverEffect === 'glide' || indicator === 'pill');
+
+  const changeOpen = useCallback(
+    (next: boolean) => {
+      if (next) setPanelShown(true);
+      if (menuOpen === undefined) setInternalOpen(next);
+      onMenuToggle?.(next);
+    },
+    [menuOpen, onMenuToggle]
+  );
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const frame = requestAnimationFrame(() => setPanelShown(true));
+    return () => cancelAnimationFrame(frame);
+  }, [open]);
 
   const settings = {
     hoverEffect,
@@ -676,9 +704,15 @@ const PillNav = ({
 
   useEffect(() => {
     if (collapsed || !open) return undefined;
-    const frame = requestAnimationFrame(() => setOpen(false));
+    const frame = requestAnimationFrame(() => changeOpen(false));
     return () => cancelAnimationFrame(frame);
-  }, [collapsed, open]);
+  }, [collapsed, open, changeOpen]);
+
+  useEffect(() => {
+    if (collapsed) return undefined;
+    const frame = requestAnimationFrame(() => setPanelShown(false));
+    return () => cancelAnimationFrame(frame);
+  }, [collapsed]);
 
   useLayoutEffect(() => {
     const panel = panelRef.current;
@@ -730,19 +764,22 @@ const PillNav = ({
         animation.cancel();
       });
     };
-  }, [open, panelShown, joined]);
+  }, [open, joined]);
 
   useEffect(() => {
     if (!open) return undefined;
     const onPointerDown = (event: PointerEvent) => {
       const target = event.target;
       if (target instanceof Node && rootRef.current?.contains(target)) return;
-      setOpen(false);
+      if (target instanceof Node && menuTriggerRef?.current?.contains(target)) return;
+      changeOpen(false);
     };
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key !== 'Escape') return;
-      setOpen(false);
-      toggleRef.current?.focus();
+      changeOpen(false);
+      const trigger =
+        toggleRef.current ?? menuTriggerRef?.current?.querySelector<HTMLButtonElement>('button');
+      trigger?.focus();
     };
     document.addEventListener('pointerdown', onPointerDown);
     document.addEventListener('keydown', onKeyDown);
@@ -750,7 +787,7 @@ const PillNav = ({
       document.removeEventListener('pointerdown', onPointerDown);
       document.removeEventListener('keydown', onKeyDown);
     };
-  }, [open]);
+  }, [open, menuTriggerRef, changeOpen]);
 
   const spin = (event: ReactPointerEvent) => {
     const mark = markRef.current;
@@ -768,10 +805,7 @@ const PillNav = ({
   };
 
   const toggle = () => {
-    const next = !open;
-    if (next) setPanelShown(true);
-    setOpen(next);
-    onMenuToggle?.(next);
+    changeOpen(!open);
   };
 
   const link = (item: PillNavItem, props: LinkProps, children: ReactNode) => {
@@ -792,9 +826,12 @@ const PillNav = ({
   const face = (item: PillNavItem) => (
     <>
       {item.icon}
-      {item.label}
+      {!iconOnly && item.label}
     </>
   );
+
+  const itemAriaLabel = (item: PillNavItem) =>
+    item.ariaLabel ?? (iconOnly ? item.label : undefined);
 
   return (
     <nav
@@ -804,7 +841,12 @@ const PillNav = ({
       data-items={itemStyle}
       data-collapsed={collapsed ? '' : undefined}
       data-open={open ? '' : undefined}
-      data-panel={panelShown ? '' : undefined}
+      data-panel={panelShown || open ? '' : undefined}
+      data-icon-only={iconOnly ? '' : undefined}
+      data-no-toggle={showToggle ? undefined : ''}
+      aria-hidden={
+        collapsed && !showToggle && !hasLogo && !open && !panelShown ? true : undefined
+      }
       style={{ ...vars, ...style } as CSSProperties}
       aria-label={ariaLabel}
     >
@@ -841,7 +883,8 @@ const PillNav = ({
                     {
                       className: ITEM,
                       'aria-current': index === activeIndex ? 'page' : undefined,
-                      'aria-label': item.ariaLabel,
+                      'aria-label': itemAriaLabel(item),
+                      'aria-expanded': item.ariaExpanded,
                       onClick: event => choose(item, index, event)
                     },
                     <>
@@ -873,7 +916,7 @@ const PillNav = ({
         </div>
       )}
 
-      {collapsed && (
+      {collapsed && showToggle && (
         <button
           ref={toggleRef}
           type="button"
@@ -891,7 +934,7 @@ const PillNav = ({
         </button>
       )}
 
-      {collapsed && panelShown && (
+      {collapsed && (panelShown || open) && (
         <div ref={panelRef} id={panelId} className={[PANEL, SURFACE].join(' ')}>
           <ul className={MENU}>
             {items.map((item, index) => (
@@ -901,11 +944,12 @@ const PillNav = ({
                   {
                     className: ROW,
                     'aria-current': index === activeIndex ? 'page' : undefined,
+                    'aria-label': itemAriaLabel(item),
+                    'aria-expanded': item.ariaExpanded,
                     tabIndex: open ? undefined : -1,
                     onClick: event => {
                       choose(item, index, event);
-                      setOpen(false);
-                      onMenuToggle?.(false);
+                      changeOpen(false);
                     }
                   },
                   face(item)
@@ -914,13 +958,7 @@ const PillNav = ({
             ))}
           </ul>
           {panelFooter && (
-            <div
-              className={PANEL_FOOTER}
-              onClick={() => {
-                setOpen(false);
-                onMenuToggle?.(false);
-              }}
-            >
+            <div className={PANEL_FOOTER} onClick={() => changeOpen(false)}>
               {panelFooter}
             </div>
           )}
