@@ -61,15 +61,30 @@ export const HeroVideo = ({
     ready && allowVideo && !reducedMotion && failedSrc !== src;
 
   useEffect(() => {
-    const markReady = () => setReady(true);
+    let idleId: number | undefined;
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
+    const scheduleReady = () => {
+      if ('requestIdleCallback' in window) {
+        idleId = window.requestIdleCallback(() => setReady(true), {
+          timeout: 1500,
+        });
+      } else {
+        timeoutId = globalThis.setTimeout(() => setReady(true), 1);
+      }
+    };
 
     if (document.readyState === 'complete') {
-      markReady();
-      return;
+      scheduleReady();
+    } else {
+      window.addEventListener('load', scheduleReady, { once: true });
     }
 
-    window.addEventListener('load', markReady, { once: true });
-    return () => window.removeEventListener('load', markReady);
+    return () => {
+      window.removeEventListener('load', scheduleReady);
+      if (idleId !== undefined) window.cancelIdleCallback(idleId);
+      if (timeoutId !== undefined) globalThis.clearTimeout(timeoutId);
+    };
   }, []);
 
   useEffect(() => {
@@ -78,13 +93,26 @@ export const HeroVideo = ({
     const video = videoRef.current;
     if (!video) return;
 
-    if (inView) {
-      void video.play().catch(() => setFailedSrc(src));
-    } else {
-      video.pause();
-    }
+    const syncPlayback = () => {
+      if (inView && !document.hidden) {
+        void video.play().catch((error: unknown) => {
+          if (error instanceof DOMException && error.name === 'AbortError') {
+            return;
+          }
+          setFailedSrc(src);
+        });
+      } else {
+        video.pause();
+      }
+    };
 
-    return () => video.pause();
+    syncPlayback();
+    document.addEventListener('visibilitychange', syncPlayback);
+
+    return () => {
+      document.removeEventListener('visibilitychange', syncPlayback);
+      video.pause();
+    };
   }, [inView, shouldRenderVideo, src]);
 
   return (
@@ -132,7 +160,7 @@ export const HeroVideo = ({
           muted
           loop
           playsInline
-          preload="auto"
+          preload="metadata"
           disablePictureInPicture
           onError={() => setFailedSrc(src)}
           tabIndex={-1}

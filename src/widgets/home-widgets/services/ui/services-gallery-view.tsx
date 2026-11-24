@@ -3,18 +3,20 @@
 import dynamic from 'next/dynamic';
 
 import { useIsMobile } from '../lib/use-is-mobile';
-import AccordionGalleryServices, {
-  type AccordionGalleryServicesProps,
-} from './services-gallery';
+import type { AccordionGalleryServicesProps } from './services-gallery';
 import type { ServicesSliderProps } from './services-slider';
 import styles from './services-gallery-view.module.scss';
 
+const loading = () => <div className={styles.placeholder} aria-hidden="true" />;
+
+const AccordionGalleryServices = dynamic<AccordionGalleryServicesProps>(
+  () => import('./services-gallery'),
+  { ssr: false, loading }
+);
+
 const ServicesSlider = dynamic<ServicesSliderProps>(
   () => import('./services-slider').then((module) => module.ServicesSlider),
-  {
-    ssr: false,
-    loading: () => <div className={styles.placeholder} aria-hidden="true" />,
-  }
+  { ssr: false, loading }
 );
 
 export interface ServicesGalleryProps extends AccordionGalleryServicesProps {
@@ -26,6 +28,10 @@ export const ServicesGallery = ({
   ...props
 }: ServicesGalleryProps) => {
   const isMobile = useIsMobile();
+
+  if (isMobile === null) {
+    return loading();
+  }
 
   if (!isMobile) {
     return <AccordionGalleryServices {...props} />;

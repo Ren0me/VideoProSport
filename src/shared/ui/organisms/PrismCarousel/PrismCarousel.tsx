@@ -12,6 +12,7 @@ import {
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "cn";
+import { useInView, usePageVisible } from "@shared/lib";
 import styles from "./PrismCarousel.module.scss";
 
 export type PrismCarouselItem = {
@@ -106,6 +107,8 @@ export const PrismCarousel = ({
     getReducedMotion,
     () => false,
   );
+  const pageVisible = usePageVisible();
+  const inView = useInView(stageRef, { rootMargin: "0px", once: false });
 
   useEffect(() => {
     const el = stageRef.current;
@@ -147,7 +150,7 @@ export const PrismCarousel = ({
 
   useEffect(() => {
     if (!autoplay || paused || reduced || items.length < 2) return;
-    if (pauseOnHover && hovered) return;
+    if (!pageVisible || !inView || (pauseOnHover && hovered)) return;
     const timer = window.setTimeout(
       () => go(1),
       Math.max(0.5, interval) * 1000,
@@ -162,6 +165,8 @@ export const PrismCarousel = ({
     pauseOnHover,
     hovered,
     interval,
+    pageVisible,
+    inView,
     go,
   ]);
 
@@ -272,11 +277,11 @@ export const PrismCarousel = ({
             const rotate = isActive
               ? 0
               : Math.max(-24, Math.min(24, distance * -14));
-            const opacity = !visible
-              ? 0
-              : isActive
-                ? 1
-                : Math.max(0.14, 1 - dim * distanceAbs);
+            const opacity = isActive
+              ? 1
+              : Math.max(0.14, 1 - dim * distanceAbs);
+
+            if (!visible) return null;
 
             return (
               <article

@@ -1,23 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import Marquee from "react-fast-marquee";
+import { useInView, useMediaQuery, usePageVisible } from "@shared/lib";
 import { useGetPartnersList } from "../lib/use-get-partners-list";
 import styles from "./partners-list.module.scss";
 
 export const PartnersList = () => {
   const partners = useGetPartnersList();
+  const rootRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
+  const pageVisible = usePageVisible();
+  const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
+  const inView = useInView(rootRef, { rootMargin: "0px", once: false });
 
   return (
-    <div className={styles.marqueeWrapper}>
+    <div ref={rootRef} className={styles.marqueeWrapper}>
       <Marquee
         autoFill
         direction="right"
         speed={48}
         loop={0}
-        play={!isPaused}
+        play={!isPaused && !reducedMotion && pageVisible && inView}
       >
         {partners.map((partner, index) => (
           <div

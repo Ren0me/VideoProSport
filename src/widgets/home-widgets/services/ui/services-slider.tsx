@@ -9,6 +9,8 @@ import { ArrowRight } from 'lucide-react';
 import 'swiper/css';
 import 'swiper/css/a11y';
 
+import { useInView, usePageVisible } from '@shared/lib';
+
 import { usePrefersReducedMotion } from '../lib/use-prefers-reduced-motion';
 import type { ServiceGalleryItem } from '../lib/use-get-services-gallery';
 import { FALLBACK_SERVICE_ICON, SERVICE_ICONS } from './service-icons';
@@ -38,8 +40,12 @@ export const ServicesSlider = ({
   interval = 5000,
   className = '',
 }: ServicesSliderProps) => {
+  const rootRef = useRef<HTMLElement>(null);
   const ringRefs = useRef<(SVGCircleElement | null)[]>([]);
   const reducedMotion = usePrefersReducedMotion();
+  const pageVisible = usePageVisible();
+  const inView = useInView(rootRef, { rootMargin: '0px', once: false });
+  const autoplayRunning = !reducedMotion && pageVisible && inView;
 
   const handleAutoplayTimeLeft = useCallback(
     (swiper: SwiperClass, _timeLeft: number, percentage: number) => {
@@ -73,7 +79,7 @@ export const ServicesSlider = ({
       speed={reducedMotion ? 0 : SLIDER_SPEED}
       loop
       autoplay={
-        reducedMotion
+        !autoplayRunning
           ? false
           : {
               delay: Math.max(1500, interval),
@@ -88,6 +94,9 @@ export const ServicesSlider = ({
         slideLabelMessage: '{{index}} из {{slidesLength}}',
       }}
       keyboard={{ enabled: true, onlyInViewport: true }}
+      onSwiper={(swiper) => {
+        rootRef.current = swiper.el;
+      }}
       onAutoplayTimeLeft={handleAutoplayTimeLeft}
     >
       {items.map(({ media, text, label, icon }, index) => {

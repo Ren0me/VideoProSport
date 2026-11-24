@@ -2,10 +2,7 @@
   position: relative;
   z-index: 1;
   width: 100%;
-  background-color: var(--page-background);
-  background-image: var(--page-background-image);
-  background-attachment: fixed;
-  background-repeat: no-repeat;
+  background: transparent;
   content-visibility: auto;
   contain-intrinsic-size: auto 504px;
 }

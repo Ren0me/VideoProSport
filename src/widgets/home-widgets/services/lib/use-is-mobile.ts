@@ -23,7 +23,7 @@ const subscribe = (onChange: () => void) => {
 
 const getSnapshot = () => getMediaQuery().matches;
 
-const getServerSnapshot = () => false;
+const getServerSnapshot = () => null;
 
 export const useIsMobile = () =>
   useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);

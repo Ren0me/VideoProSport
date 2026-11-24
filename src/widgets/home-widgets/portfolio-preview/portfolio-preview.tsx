@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
-import { LazyMount, PrismCarousel, type PrismCarouselItem } from "@shared/ui";
+import { LazyMount, type PrismCarouselItem } from "@shared/ui";
+import { PortfolioCarousel } from './portfolio-carousel';
 import styles from './portfolio-preview.module.scss'
 
 const ITEMS: PrismCarouselItem[] = [
@@ -68,7 +69,7 @@ export const PortfolioPreview = ({ footer }: PortfolioPreviewProps) => {
             <div className={styles.glass} aria-hidden='true' />
             <div className={styles.panel}>
                 <LazyMount minHeight={420} rootMargin="500px 0px">
-                    <PrismCarousel
+                    <PortfolioCarousel
                         items={ITEMS}
                         aspect={1.5}
                         size={0.66}

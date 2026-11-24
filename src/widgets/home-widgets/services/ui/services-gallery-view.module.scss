@@ -4,3 +4,9 @@
   border-radius: 16px;
   background: color-mix(in srgb, #0a0713 55%, transparent);
 }
+
+@media (min-width: 521px) {
+  .placeholder {
+    height: 460px;
+  }
+}

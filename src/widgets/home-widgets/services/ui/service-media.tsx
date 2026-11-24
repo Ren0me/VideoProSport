@@ -51,7 +51,7 @@ export const ServiceMediaView = ({
             muted
             loop
             playsInline
-            preload="auto"
+            preload="metadata"
             disablePictureInPicture
             onError={() => setFailedSrc(media.src)}
             tabIndex={-1}
