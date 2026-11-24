@@ -1,6 +1,13 @@
 'use client';
 
-import { useEffect, useRef, type ButtonHTMLAttributes, type CSSProperties, type ReactNode } from 'react';
+import {
+  useEffect,
+  useRef,
+  useSyncExternalStore,
+  type ButtonHTMLAttributes,
+  type CSSProperties,
+  type ReactNode,
+} from 'react';
 
 import './SpecularButton.css';
 import { useTheme } from 'next-themes';
@@ -14,6 +21,10 @@ export type SpecularButtonSize = 'sm' | 'md' | 'lg';
 
 const getTheme = (resolvedTheme?: string): "light" | "dark" =>
   resolvedTheme === "dark" ? "dark" : "light";
+
+const emptySubscribe = () => () => {};
+const getClientSnapshot = () => true;
+const getServerSnapshot = () => false;
 
 export interface SpecularButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children' | 'type'> {
   children?: ReactNode;
@@ -251,10 +262,15 @@ const SpecularButton = ({
   style,
   ...rest
 }: SpecularButtonProps) => {
-  const { resolvedTheme, setTheme } = useTheme();
+  const { resolvedTheme } = useTheme();
   const t = useTranslations("SpecularButton");
+  const mounted = useSyncExternalStore(
+    emptySubscribe,
+    getClientSnapshot,
+    getServerSnapshot,
+  );
   const currentTheme = getTheme(resolvedTheme);
-  const isDark = currentTheme === "dark";
+  const isDark = mounted && currentTheme === "dark";
   const buttonRef = useRef<HTMLButtonElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wakeRef = useRef<(() => void) | null>(null);
