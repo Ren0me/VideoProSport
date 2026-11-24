@@ -1,6 +1,7 @@
 
 import styles from "./Partners.module.scss";
 import { PartnersList } from "./ui/partners-list";
+import { LazyMount } from "@shared/ui";
 
 export const Partners = () => {
   return (
@@ -8,7 +9,9 @@ export const Partners = () => {
       <div className={styles.content}>
         <h2 className={styles.partnersTitle}>Наши партнеры</h2>
       </div>
-      <PartnersList />
+      <LazyMount minHeight={148} rootMargin="500px 0px">
+        <PartnersList />
+      </LazyMount>
     </section>
   );
 };

@@ -1,4 +1,4 @@
-import aboutImage from '@shared/assets/about.png';
+import photoService from '@shared/assets/photo-services.png';
 
 export type ServiceIconName =
   | 'camera'
@@ -50,38 +50,38 @@ export const useGetServicesGallery = (): ServiceGalleryItem[] => [
     label: 'Фото',
     text: 'Профессиональная фотосъёмка турниров и мероприятий',
     icon: 'camera',
-    media: resolveServiceMedia(aboutImage.src),
+    media: resolveServiceMedia(photoService.src),
   },
   {
     label: 'Видео',
     text: 'Съёмка и монтаж видео высокого качества',
     icon: 'video',
-    media: resolveServiceMedia('/videos/hero_video_h264.mp4', {
-      poster: '/videos/hero_video_poster.jpg',
+    media: resolveServiceMedia('/videos/service-video.mp4', {
+      poster: '/videos/service-video-poster.jpg',
     }),
   },
   {
     label: 'Рилс',
     text: 'Короткие вертикальные ролики для соцсетей',
     icon: 'reels',
-    media: resolveServiceMedia('/videos/hero_video_h264.mp4', {
-      poster: '/videos/hero_video_poster.jpg',
+    media: resolveServiceMedia('/videos/service-reels.mp4', {
+      poster: '/videos/service-reels-poster.jpg',
     }),
   },
   {
     label: 'Шортс',
     text: 'Динамичные ролики для Shorts и Reels',
     icon: 'film',
-    media: resolveServiceMedia('/videos/hero_video_h264.mp4', {
-      poster: '/videos/hero_video_poster.jpg',
+    media: resolveServiceMedia('/videos/service-shorts.mp4', {
+      poster: '/videos/service-shorts-poster.jpg',
     }),
   },
   {
     label: 'Бэк',
     text: 'Бэкстейдж соревнований и закулисье',
     icon: 'clapperboard',
-    media: resolveServiceMedia('/videos/hero_video_h264.mp4', {
-      poster: '/videos/hero_video_poster.jpg',
+    media: resolveServiceMedia('/videos/service-backstage.mp4', {
+      poster: '/videos/service-backstage-poster.jpg',
     }),
   },
 ];

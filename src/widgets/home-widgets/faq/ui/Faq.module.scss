@@ -6,6 +6,14 @@
   background-image: var(--page-background-image);
   background-attachment: fixed;
   background-repeat: no-repeat;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 504px;
+}
+
+@media (min-width: 768px) {
+  .faq {
+    contain-intrinsic-size: auto 594px;
+  }
 }
 
 .content {

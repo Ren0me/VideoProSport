@@ -1,7 +1,7 @@
 import styles from "./Services.module.scss";
 import { ServicesGallery } from "./ui/services-gallery-view";
 import { useGetServicesGallery } from "./lib/use-get-services-gallery";
-import { CornerLink } from "@/src/shared/ui";
+import { CornerLink, LazyMount } from "@/src/shared/ui";
 
 export const Services = () => {
   const items = useGetServicesGallery();
@@ -11,6 +11,7 @@ export const Services = () => {
       <div className={styles.content}>
         <h2 className={styles.servicesTitle}>Услуги</h2>
         <div className={styles.servicesGallery}>
+          <LazyMount minHeight={460} rootMargin="500px 0px">
             <ServicesGallery
                 items={items}
                 defaultIndex={2}
@@ -31,6 +32,7 @@ export const Services = () => {
                 radius={16}
                 orientation="horizontal"
             />
+          </LazyMount>
         </div>
         <CornerLink label="Об услугах" route="services"/>
       </div>

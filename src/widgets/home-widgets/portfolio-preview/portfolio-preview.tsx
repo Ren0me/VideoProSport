@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { PrismCarousel, type PrismCarouselItem } from "@shared/ui";
+import { LazyMount, PrismCarousel, type PrismCarouselItem } from "@shared/ui";
 import styles from './portfolio-preview.module.scss'
 
 const ITEMS: PrismCarouselItem[] = [
@@ -67,21 +67,23 @@ export const PortfolioPreview = ({ footer }: PortfolioPreviewProps) => {
             </div>
             <div className={styles.glass} aria-hidden='true' />
             <div className={styles.panel}>
-                <PrismCarousel
-                    items={ITEMS}
-                    aspect={1.5}
-                    size={0.66}
-                    neighborScale={0.7}
-                    gap={16}
-                    radius={20}
-                    saturation={0}
-                    dim={0.24}
-                    sweep={1}
-                    sweepDuration={1.05}
-                    interval={5}
-                    className={styles.carousel}
-                    captions={false}
-                />
+                <LazyMount minHeight={420} rootMargin="500px 0px">
+                    <PrismCarousel
+                        items={ITEMS}
+                        aspect={1.5}
+                        size={0.66}
+                        neighborScale={0.7}
+                        gap={16}
+                        radius={20}
+                        saturation={0}
+                        dim={0.24}
+                        sweep={1}
+                        sweepDuration={1.05}
+                        interval={5}
+                        className={styles.carousel}
+                        captions={false}
+                    />
+                </LazyMount>
             </div>
             {footer ? <div className={styles.footerSlot}>{footer}</div> : null}
         </section>

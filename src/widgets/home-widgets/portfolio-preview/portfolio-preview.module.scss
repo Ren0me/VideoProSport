@@ -90,6 +90,14 @@
   z-index: 2;
   width: min(100%, 68rem);
   margin-inline: auto;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 420px;
+}
+
+@media (min-width: 768px) {
+  .panel {
+    contain-intrinsic-size: auto 538px;
+  }
 }
 
 .footerSlot {

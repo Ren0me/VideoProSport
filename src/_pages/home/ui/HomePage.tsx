@@ -15,8 +15,10 @@ export const HomePage = () => {
   return(
     <>
       <Hero
-        videoSrc="/videos/hero_video_h264.mp4"
-        poster="/videos/hero_video_poster.jpg"
+        videoSrc="/videos/hero-desktop.mp4"
+        videoSrcMobile="/videos/hero-mobile.mp4"
+        poster="/videos/hero-desktop-poster.jpg"
+        mobilePoster="/videos/hero-mobile-poster.jpg"
       />
       <About />
       <Services />

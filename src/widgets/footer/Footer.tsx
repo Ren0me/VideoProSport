@@ -82,8 +82,7 @@ export const Footer = async ({
               alt="Video Pro Sport"
               width={160}
               height={80}
-              loading="eager"
-              fetchPriority="high"
+              loading="lazy"
               className={styles.logo}
             />
           </Link>

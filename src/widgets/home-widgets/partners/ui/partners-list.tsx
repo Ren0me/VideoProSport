@@ -39,6 +39,8 @@ export const PartnersList = () => {
                 alt={partner.alt}
                 width={300}
                 height={100}
+                loading="lazy"
+                decoding="async"
                 className={styles.partnerImage}
               />
             </a>

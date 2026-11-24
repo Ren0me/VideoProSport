@@ -1,17 +1,23 @@
 import { SpecularButton } from "@shared/ui/molecules";
 import styles from "./Hero.module.scss";
-import { ArrowRight } from "lucide-react";
-import { useTheme } from "next-themes";
 import UseAnimations from 'react-useanimations';
 import scrollDown from 'react-useanimations/lib/scrollDown';
+import { HeroVideo } from './ui/HeroVideo';
 
 export type HeroProps = {
   videoSrc?: string;
+  videoSrcMobile?: string;
   poster?: string;
+  mobilePoster?: string;
 };
 
-export const Hero = ({ videoSrc, poster }: HeroProps) => {
-  const hasVideo = Boolean(videoSrc);
+export const Hero = ({
+  videoSrc,
+  videoSrcMobile,
+  poster,
+  mobilePoster,
+}: HeroProps) => {
+  const hasVideo = Boolean(videoSrc || videoSrcMobile);
 
   return (
     <section
@@ -19,19 +25,12 @@ export const Hero = ({ videoSrc, poster }: HeroProps) => {
       className={styles.hero}
       data-has-video={hasVideo ? "" : undefined}
     >
-      {hasVideo && (
-        <video
-          className={styles.video}
-          src={videoSrc}
+      {hasVideo && videoSrc && poster && (
+        <HeroVideo
+          desktopSrc={videoSrc}
+          mobileSrc={videoSrcMobile}
           poster={poster}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          disablePictureInPicture
-          aria-hidden="true"
-          tabIndex={-1}
+          mobilePoster={mobilePoster}
         />
       )}
 

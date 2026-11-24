@@ -7,6 +7,14 @@
   background-image: var(--page-background-image);
   background-attachment: fixed;
   background-repeat: no-repeat;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 1308px;
+}
+
+@media (min-width: 768px) {
+  .about {
+    contain-intrinsic-size: auto 642px;
+  }
 }
 
 .content {
